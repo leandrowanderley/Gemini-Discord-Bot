@@ -61,7 +61,7 @@ E onde tem `SUA_CHAVE_DE_API_GEMINI` coloque a Key da API do Gemini.
 5. Execute o bot:
 
     ```bash
-    python seu_bot.py
+    python main.py
 
 
 ## Licença
