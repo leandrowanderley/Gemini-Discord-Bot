@@ -12,7 +12,7 @@ Este repositório contém um bot do Discord desenvolvido em Python que utiliza a
 
 - Google Gemini API
 - Python
-- Discord.py 
+- Discord.py
 - Json
 
 ## Como Começar
@@ -27,11 +27,13 @@ Este repositório contém um bot do Discord desenvolvido em Python que utiliza a
 ### Passos
 
 1. Clone o repositório:
+
    ```bash
    git clone https://github.com/leandro-odev/BotDiscord
    cd BotDiscord
 
 2. Crie e ative um ambiente virtual (opcional, mas recomendado):
+
     ```bash
     python -m venv .venv
     # Ative o ambiente virtual
@@ -41,19 +43,23 @@ Este repositório contém um bot do Discord desenvolvido em Python que utiliza a
     source .venv/bin/activate
 
 3. Instale as dependências:
+
     ```bash
     pip install -r requirements.txt
 
 4. Crie um arquivo `config.json` com o seguinte formato:
+
     ```bash
     {
         "discord_token": "SEU_TOKEN_DO_DISCORD",
         "gemini_api_key": "SUA_CHAVE_DE_API_GEMINI"
     }
+
 Onde tem `SEU_TOKEN_DO_DISCORD` coloque o Token do Bot do Discord.
 E onde tem `SUA_CHAVE_DE_API_GEMINI` coloque a Key da API do Gemini.
 
 5. Execute o bot:
+
     ```bash
     python seu_bot.py
 
