@@ -4,7 +4,9 @@ import google.generativeai as genai
 with open("config.json", "r") as file:
     config = json.load(file)
 
-genai.configure(api_key=config["gemini_api_key"])
+gemini_token = config["gemini_api_key"]
+
+genai.configure(api_key=gemini_token)
 
 # Configurações do modelo
 generation_config = {
