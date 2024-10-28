@@ -1,6 +1,5 @@
 import json
 import google.generativeai as genai
-from google.generativeai.types import Content
 
 with open("config.json", "r") as file:
     config = json.load(file)
@@ -26,15 +25,27 @@ model = genai.GenerativeModel(
 def generate_message(message, historico):
     formatted_history = []
     
+    # Adiciona o histórico de mensagens no formato de dicionário certo
     for user_msg, bot_msg in historico:
-        formatted_history.append(Content(role="user", content=user_msg))
-        formatted_history.append(Content(role="model", content=bot_msg))
+        formatted_history.append({
+            "role": "user",
+            "parts": [user_msg]
+        })
+        formatted_history.append({
+            "role": "model",
+            "parts": [bot_msg]
+        })
 
-    formatted_history.append(Content(role="user", content=message))
+    # Adiciona a nova mensagem do usuário
+    formatted_history.append({
+        "role": "user",
+        "parts": [message]
+    })
     
+    # Inicia uma nova sessão de chat com o histórico formatado
     chat_session = model.start_chat(history=formatted_history)
     response = chat_session.send_message(message)
-    print(response) 
+
     # Extrair o texto da resposta
     if hasattr(response, 'candidates') and response.candidates:
         return response.candidates[0].content.parts[0].text
@@ -42,4 +53,9 @@ def generate_message(message, historico):
         return "Desculpe, não recebi uma resposta válida da API."
 
 
-generate_message("Apartir de agora você é vascaino", [])
+# historico_inicial = [
+#     ("Apartir de agora você é vascaino", "E aí, vascaíno! ⚡️🖤🤍 A partir de agora, a torcida vai ser ainda mais forte! Me contem tudo sobre o Gigante da Colina: qual o seu ídolo, a sua maior conquista, o que te deixa mais feliz como vascaíno?  Estou pronto para vibrar com cada gol, cada vitória e cada momento épico do Vasco! 🏆 Vamos juntos rumo à glória! 👊")
+# ]
+# x = generate_message("que coisa boa. qual o maior jogador da historia do seu time", historico_inicial)
+
+# print(x)

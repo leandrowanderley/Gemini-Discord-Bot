@@ -21,7 +21,7 @@ def gerar_resposta(message):
         resposta = generate_message(message, historico)
         # Atualiza o histórico
         historico.append((message, resposta))
-        # Mantém apenas as últimas 10 mensagens/respostas
+        # Mantém apenas as últimas 10 mensagens e respostas
         if len(historico) > 10:
             historico.pop(0)
         return resposta
