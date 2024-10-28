@@ -13,9 +13,18 @@ intents.message_content = True
 
 bot = commands.Bot(command_prefix='/', intents=intents)
 
+# Lista para armazenar o histórico de mensagens e respostas
+historico = []
+
 def gerar_resposta(message):
     try:
-        return generate_message(message)
+        resposta = generate_message(message, historico)
+        # Atualiza o histórico
+        historico.append((message, resposta))
+        # Mantém apenas as últimas 10 mensagens/respostas
+        if len(historico) > 10:
+            historico.pop(0)
+        return resposta
     except Exception as e:
         print(f"Erro na API GeminiAPI: {e}")
         return "Desculpe, ocorreu um erro ao gerar a resposta."
