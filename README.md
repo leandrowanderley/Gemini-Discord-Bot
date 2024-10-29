@@ -31,6 +31,7 @@ Este repositório contém um bot do Discord desenvolvido em Python que utiliza a
    ```bash
    git clone https://github.com/leandro-odev/BotDiscord
    cd BotDiscord
+    ```
 
 2. Crie e ative um ambiente virtual (opcional, mas recomendado):
 
@@ -41,11 +42,13 @@ Este repositório contém um bot do Discord desenvolvido em Python que utiliza a
     .venv\Scripts\activate
     # macOS/Linux
     source .venv/bin/activate
+    ```
 
 3. Instale as dependências:
 
     ```bash
     pip install -r requirements.txt
+    ```
 
 4. Crie um arquivo `config.json` com o seguinte formato:
 
@@ -54,6 +57,7 @@ Este repositório contém um bot do Discord desenvolvido em Python que utiliza a
         "discord_token": "SEU_TOKEN_DO_DISCORD",
         "gemini_api_key": "SUA_CHAVE_DE_API_GEMINI"
     }
+    ```
 
 Onde tem `SEU_TOKEN_DO_DISCORD` coloque o Token do Bot do Discord.
 E onde tem `SUA_CHAVE_DE_API_GEMINI` coloque a Key da API do Gemini.
@@ -62,7 +66,14 @@ E onde tem `SUA_CHAVE_DE_API_GEMINI` coloque a Key da API do Gemini.
 
     ```bash
     python main.py
+    ```
 
+EXTRA. Fazer um executável para o bot:
+Caso queira, faça um executável com esse comando.
+
+```bash
+python -m PyInstaller --onefile --icon=../icon.png bot.py --hidden-import google --hidden-import google.generativeai
+```
 
 ## Licença
 
