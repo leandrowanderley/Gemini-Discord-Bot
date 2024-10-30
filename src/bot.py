@@ -1,4 +1,4 @@
-# bot.py
+
 import discord
 from discord.ext import commands
 import random
@@ -8,22 +8,22 @@ from responses import configure_genai, generate_message
 from utils import split_message
 
 # Carregar configurações
-config = load_config("D:\\programacao\\Gemini-Discord-Bot\\src\\config.json")
+config = load_config("D:\\programacao\\Gemini-Discord-Bot\\src\\data\\config.json")
 discord_token = config["discord_token"]
-mensagens = load_messages("D:\\programacao\\Gemini-Discord-Bot\\src\\mensagens.json")
+mensagens = load_messages("D:\\programacao\\Gemini-Discord-Bot\\src\\data\\mensagens.json")
 historico = []
 
 # Configurar API do Gemini
 model = configure_genai(api_key=config["gemini_api_key"])
 
-# Configurar bot
+# Configurar botq
 intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix='/', intents=intents)
 
 @bot.command()
 async def chat(ctx, *, message: str):
-    gemini_answer = generate_message(message, historico, model, "D:\\programacao\\Gemini-Discord-Bot\\src\\prompts.json")
+    gemini_answer = generate_message(message, historico, model, "D:\\programacao\\Gemini-Discord-Bot\\src\\data\\prompts.json")
     historico.append((message, gemini_answer))
 
     if len(historico) > 10:
