@@ -1,5 +1,7 @@
 # Ignorar
 config.json
+prompts.json
+mensagens.json
 
 # Ignorar arquivos de ambiente
 .env
@@ -27,3 +29,4 @@ __pycache__/
 # Ignorar outros arquivos temporários
 .DS_Store
 Thumbs.db
+

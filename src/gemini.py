@@ -10,10 +10,10 @@ genai.configure(api_key=gemini_token)
 
 # Configurações do modelo
 generation_config = {
-    "temperature": 1,
-    "top_p": 0.95,
-    "top_k": 64,
-    "max_output_tokens": 8192,
+    "temperature": 0.8,
+    "top_p": 0.9,
+    "top_k": 50,
+    "max_output_tokens": 4000,
     "response_mime_type": "text/plain",
 }
 
@@ -44,9 +44,23 @@ def generate_message(message, historico):
         "parts": [message]
     })
     
-    # Inicia uma nova sessão de chat com o histórico formatado
+    
     chat_session = model.start_chat(history=formatted_history)
-    response = chat_session.send_message(message)
+
+
+    # Incluindo personalidades
+    with open("D:\programacao\Gemini-Discord-Bot\src\prompts.json", "r") as file:
+        prompts = json.load(file)
+
+
+    prompt = prompts["default"]
+
+    if "Ele" in message or "ele" in message or "morreu" in message or "morto" in message or "morte" in message or "Gojo" in message or "gojo" in message:
+        prompt = prompts["gojo"]
+
+    message_with_prompt = prompt + message
+
+    response = chat_session.send_message(message_with_prompt)
 
     # Extrair o texto da resposta
     if hasattr(response, 'candidates') and response.candidates:
