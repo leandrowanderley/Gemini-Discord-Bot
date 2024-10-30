@@ -63,13 +63,13 @@ Este repositório contém um bot do Discord desenvolvido em Python que utiliza a
 Você deve criar esses arquivos `.json`, pois eles possuem uma função específica para a personalidade que eu quero que o Gemini use, e mensagens pré feitas para que ele envie na dm dos usuário, como pode ser visto no código. Caso você queira coloca-los basta criar ambos os arquivos assim
 
     ```bash
-    // prompts.json
+    # prompts.json
     {
         "prompt1": "Prompt 1",
         "prompt2": "Prompt 2"
     }
     
-    // mensagens.json
+    # mensagens.json
     {
     "mensagens": [
             "Mensagem 1",
