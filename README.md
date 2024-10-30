@@ -59,10 +59,28 @@ Este repositório contém um bot do Discord desenvolvido em Python que utiliza a
     }
     ```
 
-Onde tem `SEU_TOKEN_DO_DISCORD` coloque o Token do Bot do Discord.
-E onde tem `SUA_CHAVE_DE_API_GEMINI` coloque a Key da API do Gemini.
+5. Crie um arquivo `prompts.json` e `mensagens.json`:
+Você deve criar esses arquivos `.json`, pois eles possuem uma função específica para a personalidade que eu quero que o Gemini use, e mensagens pré feitas para que ele envie na dm dos usuário, como pode ser visto no código. Caso você queira coloca-los basta criar ambos os arquivos assim
 
-5. Execute o bot:
+    ```bash
+    // prompts.json
+    {
+        "prompt1": "Prompt 1",
+        "prompt2": "Prompt 2"
+    }
+    
+    // mensagens.json
+    {
+    "mensagens": [
+            "Mensagem 1",
+            "Mensagem 2",
+            "Mensagem 3",
+            "..."
+        ]
+    }
+    ```
+
+6. Execute o bot:
 
     ```bash
     python main.py
