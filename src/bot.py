@@ -1,8 +1,9 @@
-
+# Imports necessários para o funcionamento do bot
+import random
 import discord
 from discord.ext import commands
-import random
 
+# Imports locais
 from config import load_config, load_messages
 from responses import configure_genai, generate_message
 from utils import split_message
@@ -16,10 +17,14 @@ historico = []
 # Configurar API do Gemini
 model = configure_genai(api_key=config["gemini_api_key"])
 
-# Configurar botq
+# Configurar bot
 intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix='/', intents=intents)
+
+# Função para carregar cogs
+async def load_cogs():
+    await bot.load_extension("cogs.coup_discord")  # Carregar o novo cog
 
 @bot.command()
 async def chat(ctx, *, message: str):
@@ -80,4 +85,10 @@ async def on_guild_join(guild):
         print("Nenhum canal disponível para enviar a mensagem de boas-vindas.")
 
 
-bot.run(discord_token)
+# Carregar cogs e iniciar o bot
+async def main():
+    await load_cogs()
+    await bot.start(discord_token)
+
+import asyncio
+asyncio.run(main())
