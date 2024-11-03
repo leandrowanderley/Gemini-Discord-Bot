@@ -38,6 +38,10 @@ async def chat(ctx, *, message: str):
         await ctx.send(msg)
     print(f"INFO: Comando /chat acionado por {ctx.author.name}.")
 
+@bot.command()
+async def games(ctx):
+    await ctx.send("Jogos disponíveis: Coup (/coup_help)")
+
 @bot.event
 async def on_ready():
     print(f"{bot.user} está online e pronto para uso!")
