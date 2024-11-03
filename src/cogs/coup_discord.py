@@ -1,3 +1,4 @@
+import discord
 from discord.ext import commands
 
 from games.coup.coup import Coup
@@ -46,7 +47,7 @@ class CoupDiscord(commands.Cog):
         try:
             self.coup_game = Coup("base")
             await ctx.send("Partida de Coup aberta! Use `/coup_join` para entrar na partida.")
-            print(f"Partida aberta. Instância de coup_game: {self.coup_game}")
+            print(f"INFO: Partida aberta. Instância de coup_game: {self.coup_game}")
         except Exception as e:
             print(f"ERROS: Erro ao abrir o jogo: {e}")
     
@@ -56,34 +57,51 @@ class CoupDiscord(commands.Cog):
             await ctx.send("Nenhuma partida aberta! Use `/coup_open_game` para iniciar uma.")
             return
 
-        print(f"Adicionando jogador: {ctx.author.name}")
+        print(f"INFO: Adicionando jogador: {ctx.author.name}")
         try:
             name = ctx.author.name
-            self.coup_game.add_player(name)
+            user_id = ctx.author.id
+            self.coup_game.add_player(name, user_id)
             await ctx.send("Jogador(a) adicionado(a) à partida de Coup!")
         except Exception as e:
             print(f"ERROS: Erro ao adicionar jogador de nome {name}: {e}")
             await ctx.send(f"Erro ao adicionar jogador: {name}")
             
-    
-
-
     @commands.command()
     async def coup_start(self, ctx):
-        if self.coup_game is None:
-            await ctx.send("Nenhuma partida aberta! Use `/coup_open_game` para iniciar uma.")
-            return
+        try:
+            if self.coup_game is None:
+                await ctx.send("Nenhuma partida aberta! Use `/coup_open_game` para iniciar uma.")
+                return
 
-        await ctx.send("Partida de Coup iniciada!")
-        
-        if self.coup_game.players:  # Verifica se a lista de jogadores não está vazia
-            players = "Jogadores na partida: " + ", ".join(player.name for player in self.coup_game.players)
-            await ctx.send(players)  # Envia a lista de jogadores como mensagem
-        else:
-            await ctx.send("Nenhum jogador na partida!")
-        
-        self.coup_game.start_game()
-    
+            await ctx.send("Partida de Coup iniciada!")
+            
+            if self.coup_game.players:
+                players = "Jogadores na partida: " + ", ".join(player.name for player in self.coup_game.players)
+                await ctx.send(players)
+            else:
+                await ctx.send("Nenhum jogador na partida!")
+
+            print("INFO: Jogadores na partida:")
+            for player in self.coup_game.players:
+                print(player)
+
+            self.coup_game.start_game()
+            print("INFO: Partida iniciada, e cartas distribuídas!")
+
+            self.coup_game.turn = 0
+            print("INFO: Turno escolhido! " + self.coup_game.get_current_player().name + " " + str(self.coup_game.turn))
+
+            for player in self.coup_game.players:
+                member = await self.bot.fetch_user(player.id)
+                print(member)
+                await member.send("Seu status é: " + str(player))
+            await ctx.send("Cartas distribuídas! Verifique a DM, lá contém suas cartas. A primeira rodada começa com " + self.coup_game.get_current_player().name)
+            print("INFO: Status enviado para os players!")
+        except Exception as e:
+            print(f"ERRO: {e} ao iniciar a partida.")
+
+            await ctx.send("Ocorreu um erro ao iniciar o jogo.")
 
 
 
@@ -91,6 +109,5 @@ async def setup(bot):
     print("Adicionando o cog CoupDiscord...")
     await bot.add_cog(CoupDiscord(bot))
 
-# Esta parte deve ser no final do arquivo
 if __name__ == "__main__":
     print("Este módulo não deve ser executado diretamente.")

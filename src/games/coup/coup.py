@@ -5,18 +5,19 @@ class Coup:
     def __init__(self, gamemode):
         self.deck = Deck(gamemode)
         self.players = []
-        self.turn = 0
+        self.turn = None
     
     def start_game(self):
+        print("INFO: Iniciando o jogo...")
         for player in self.players:
-            player.Cards.append(self.deck.get_card())
-            player.Cards.append(self.deck.get_card())
+            player.cards.append(self.deck.get_card())
+            player.cards.append(self.deck.get_card())
 
     def next_turn(self):
         self.turn = (self.turn + 1) % len(self.players)
 
-    def add_player(self, player_name):
-        player = Player(player_name)
+    def add_player(self, player_name, user_id):
+        player = Player(player_name, user_id)
         self.players.append(player)
         print(f"Jogador adicionado: {player.name}. Total de jogadores: {len(self.players)}")
 

@@ -17,11 +17,17 @@ class Deck:
         self.cards = base_cards if gamemode == "base" else expansion_cards
         self.shuffle()
 
+    def __str__(self):
+        cards = ", ".join(str(card) for card in self.cards)
+        return f"Baralho: {cards}"
+
     def shuffle(self):
         random.shuffle(self.cards)
     
     def get_card(self):
-        return self.cards.pop(0) if self.cards else None
+        if not self.cards:
+            return None
+        return self.cards.pop(0)
 
     def return_card(self, card):
         self.cards.append(card)
