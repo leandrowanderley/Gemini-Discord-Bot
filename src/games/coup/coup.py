@@ -6,6 +6,9 @@ class Coup:
         self.deck = Deck(gamemode)
         self.players = []
         self.turn = None
+        self.state = "waiting" # waiting / doubt
+        self.cpass = None
+        self.action = ""
     
     def start_game(self):
         print("INFO: Iniciando o jogo...")
@@ -17,6 +20,11 @@ class Coup:
         self.turn = (self.turn + 1) % len(self.players)
 
     def add_player(self, player_name, user_id):
+        for player in self.players:
+            if player_name == player.name:
+                print(f"ERRO: Jogador {player_name} já existe!")
+                return
+
         player = Player(player_name, user_id)
         self.players.append(player)
         print(f"Jogador adicionado: {player.name}. Total de jogadores: {len(self.players)}")
@@ -34,6 +42,22 @@ class Coup:
 
     # Actions
 
+    def action(self, player, target=None, card_name=None):
+        if self.action == "basica":
+            self.action_basica(player)
+        elif self.action == "ajudaExterna":
+            self.action_ajudaExterna(player)
+        elif self.action == "coup":
+            self.action_coup(player, target)
+        elif self.action == "duque":
+            self.action_duque(player)
+        elif self.action == "capitao":
+            self.action_capitao(player, target)
+        # elif self.action == "assassino":
+        #     self.action_assassino(player, target, card_name)
+        # elif self.action == "embaixador":
+        #     self.action_embaixador(player)
+
     def action_basica(self, player):
         player.tokens += 1
     
@@ -44,7 +68,7 @@ class Coup:
         if player.tokens < 7:
             return False
         player.tokens -= 7
-        target.lose_card()
+        # target.lose_card()
 
     def action_duque(self, player):
         player.tokens += 3
@@ -61,7 +85,7 @@ class Coup:
         if player.tokens < 3:
             return False
         player.tokens -= 3
-        target.lose_card(card_name)
+        # target.lose_card(card_name)
 
     def action_embaixador_first(self, player):
         player.Cards.append(self.deck.get_card())
@@ -72,4 +96,16 @@ class Coup:
         card = player.Cards.pop(card_number)
         if card:
             self.deck.return_card(card)
+    
+    def action_choose_card(self, player, chosen_card):
+        print(f"INFO: tentando eliminar a carta {chosen_card.name} do jogador {player.name}")
+        
+        # Tenta encontrar e remover a carta escolhida
+        if chosen_card in player.cards:
+            player.cards.remove(chosen_card)
+            print(f"INFO: Carta {chosen_card.name} eliminada do jogador {player.name}.")
+            return chosen_card
+        else:
+            print(f"ERRO: Carta {chosen_card.name} não encontrada nas cartas do jogador {player.name}.")
+            return None
         

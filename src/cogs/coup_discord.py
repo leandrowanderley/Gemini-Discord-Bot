@@ -24,6 +24,8 @@ class CoupDiscord(commands.Cog):
                     "- `/coup_action_list`  ➜ Exibe a lista de ações disponíveis.\n"
                     "- `/coup_jogadores`  ➜ Mostra os jogadores que estão na partida.\n"
                     "- `/coup_pass`  ➜ Quando todos os jogadores digitarem este comando, significa que ninguém duvida, e a ação será realizada.\n"
+                    "- `/coup_choose_card`  ➜ Escolher carta - Escolha uma carta papa perder.\n"
+                    "- `/coup_order`  ➜ Ordem de jogadores - Ver a ordem de jogadores da partida.\n"
                     "- `/coup_duvidar`  ➜ Usado por um jogador para duvidar da ação de outro jogador.\n\n"
                     )
 
@@ -41,7 +43,7 @@ class CoupDiscord(commands.Cog):
                     "- `/coup_condessa`  ➜ Condessa - Protege contra o Assassino.\n\n"
                     )
 
-    # Comandos Básicos do Jogo Coup
+    # Comandos para iniciar o Jogo Coup
     @commands.command()
     async def coup_open_game(self, ctx):
         try:
@@ -90,18 +92,152 @@ class CoupDiscord(commands.Cog):
             print("INFO: Partida iniciada, e cartas distribuídas!")
 
             self.coup_game.turn = 0
+            self.coup_game.cpass = 0
             print("INFO: Turno escolhido! " + self.coup_game.get_current_player().name + " " + str(self.coup_game.turn))
 
             for player in self.coup_game.players:
                 member = await self.bot.fetch_user(player.id)
                 print(member)
                 await member.send("Seu status é: " + str(player))
+
             await ctx.send("Cartas distribuídas! Verifique a DM, lá contém suas cartas. A primeira rodada começa com " + self.coup_game.get_current_player().name)
             print("INFO: Status enviado para os players!")
+
         except Exception as e:
             print(f"ERRO: {e} ao iniciar a partida.")
 
             await ctx.send("Ocorreu um erro ao iniciar o jogo.")
+
+    @commands.command()
+    async def coup_order(self, ctx):
+        if self.coup_game is None:
+            await ctx.send("Nenhuma partida aberta! Use `/coup_open_game` para iniciar uma.")
+            return
+
+        players = self.coup_game.get_players()
+        await ctx.send("Ordem dos jogadores: " + ", ".join(players))
+
+
+    # Comandos de ações do jogo Coup
+    @commands.command()
+    async def coup_pass(self, ctx):
+        if self.coup_game is None:
+            await ctx.send("Nenhuma partida aberta! Use `/coup_open_game` para iniciar uma.")
+            return
+        elif self.coup_game.state == "doubt":
+            self.coup_game.cpass += 1
+            if self.coup_game.cpass == len(self.coup_game.players):
+                self.coup_game.cpass = 0
+                self.coup_game.state = "waiting"
+                await ctx.send("Todos passaram! A ação será realizada.")
+                self.coup_game.action(self.coup_game.get_current_player())
+                self.coup_game.next_turn()
+            else:
+                await ctx.send("Votos para passar: " + str(self.coup_game.cpass) + "/" + str(len(self.coup_game.players)))
+        else:
+            await ctx.send("Nada para passar!")
+
+    @commands.command()
+    async def coup_basica(self, ctx):
+        player = self.coup_game.get_current_player()
+        if player.name != ctx.author.name:
+            await ctx.send(f"Agora é a vez de {player.name}.")
+            return
+        if self.coup_game is None:
+            await ctx.send("Nenhuma partida aberta! Use `/coup_open_game` para iniciar uma.")
+            return
+        # elif self.coup_game.state == "doubt":
+        #     await ctx.send("A partida está em estado de dúvida. Use `/coup_pass` para confirmar a ação.")
+        #     return
+
+        # self.coup_game.state = "doubt"
+
+        # self.coup_game.action = "basica"
+
+        player = self.coup_game.get_current_player()
+        self.coup_game.action_basica(player)
+        await ctx.send(f"Ação básica realizada por {player.name}! Ganhou 1 moeda.")
+        for player in self.coup_game.players:
+            member = await self.bot.fetch_user(player.id)
+            print(member)
+            await member.send("Seu status é: " + str(player))
+        self.coup_game.next_turn()
+
+    @commands.command()
+    async def coup_coup(self, ctx, *, message: str):
+        if self.coup_game is None:
+            await ctx.send("Nenhuma partida aberta! Use `/coup_open_game` para iniciar uma.")
+            return
+        
+        player = self.coup_game.get_current_player()
+        target = self.coup_game.get_player(message)
+        self.coup_game.action_coup(player, target)
+        await ctx.send(f"Golpe de Estado realizado por {player.name}! Eliminou uma carta de {target.name}.\n {target.name} escolha uma carta para ser eliminada, use o nome dela.")
+        await ctx.send(f"{target.name}, use `/coup_choose_card` para escolher a sua carta para ser eliminada, use o nome da carta na sua DM.")
+        self.coup_game.state = "doubt"
+        
+    @commands.command()
+    async def coup_choose_card(self, ctx, *, message: str):
+        print("INFO: Comando /coup_choose_card acionado.")
+        
+        if self.coup_game is None:
+            await ctx.send("Nenhuma partida aberta! Use `/coup_open_game` para iniciar uma.")
+            print("ERRO: Nenhuma partida aberta no momento.")
+            return
+
+        elif self.coup_game.state != "doubt":
+            await ctx.send("Não há uma ação em que escolher cartas seja necessário agora.")
+            print(f"ERRO: Estado atual do jogo é '{self.coup_game.state}', esperado 'doubt'.")
+            return
+
+        target = self.coup_game.get_player(ctx.author.name)
+        print(f"INFO: Jogador alvo é {target.name} com cartas: {[card.name for card in target.cards]}")
+        
+        chosen_card = next((card for card in target.cards if card.name.lower() == message.lower()), None)
+        
+        if not chosen_card:
+            await ctx.send("Nome da carta inválido. Por favor, escolha uma carta válida entre as suas.")
+            print(f"ERRO: Carta '{message}' não encontrada nas cartas do jogador {target.name}.")
+            print("Cartas do jogador:", [card.name for card in target.cards])
+            return
+
+        print(f"INFO: {target.name} escolheu a carta {chosen_card.name} para ser eliminada.")
+        
+        # Elimina a carta escolhida
+        self.coup_game.action_choose_card(target, chosen_card)
+        
+        # Confirmação se a carta foi removida
+        remaining_cards = [card.name for card in target.cards]
+        print(f"INFO: Cartas restantes para {target.name} após eliminação: {remaining_cards}")
+        
+        await ctx.send(f"{target.name} escolheu a carta {chosen_card.name} para ser eliminada.")
+
+        # Verificação do estado do jogo após a ação
+        print(f"INFO: Estado atual do jogo após a eliminação da carta: {self.coup_game.state}")
+        
+        # Verificação do turno atual
+        current_player = self.coup_game.get_current_player()
+        print(f"INFO: Próximo turno para: {current_player.name if current_player else 'Nenhum jogador'}")
+        
+        
+        for player in self.coup_game.players:
+            member = await self.bot.fetch_user(player.id)
+            print(member)
+            await member.send("Seu status é: " + str(player))
+
+    
+    @commands.command()
+    async def coup_test(self, ctx):
+        player = self.coup_game.get_current_player()
+        player.tokens += 100
+
+
+
+
+
+
+
+
 
 
 
