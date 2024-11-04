@@ -146,13 +146,6 @@ class CoupDiscord(commands.Cog):
         if self.coup_game is None:
             await ctx.send("Nenhuma partida aberta! Use `/coup_open_game` para iniciar uma.")
             return
-        # elif self.coup_game.state == "doubt":
-        #     await ctx.send("A partida está em estado de dúvida. Use `/coup_pass` para confirmar a ação.")
-        #     return
-
-        # self.coup_game.state = "doubt"
-
-        # self.coup_game.action = "basica"
 
         player = self.coup_game.get_current_player()
         self.coup_game.action_basica(player)
@@ -171,6 +164,7 @@ class CoupDiscord(commands.Cog):
         
         player = self.coup_game.get_current_player()
         target = self.coup_game.get_player(message)
+        self.target = target
         self.coup_game.action_coup(player, target)
         await ctx.send(f"Golpe de Estado realizado por {player.name}! Eliminou uma carta de {target.name}.\n {target.name} escolha uma carta para ser eliminada, use o nome dela.")
         await ctx.send(f"{target.name}, use `/coup_choose_card` para escolher a sua carta para ser eliminada, use o nome da carta na sua DM.")
@@ -204,9 +198,11 @@ class CoupDiscord(commands.Cog):
         print(f"INFO: {target.name} escolheu a carta {chosen_card.name} para ser eliminada.")
         
         # Elimina a carta escolhida
-        self.coup_game.action_choose_card(target, chosen_card)
+        info = self.coup_game.action_choose_card(target, chosen_card)
+        if not info:
+            await ctx.send(info)
+            return  
         
-        # Confirmação se a carta foi removida
         remaining_cards = [card.name for card in target.cards]
         print(f"INFO: Cartas restantes para {target.name} após eliminação: {remaining_cards}")
         
@@ -215,11 +211,15 @@ class CoupDiscord(commands.Cog):
         # Verificação do estado do jogo após a ação
         print(f"INFO: Estado atual do jogo após a eliminação da carta: {self.coup_game.state}")
         
+        self.coup_game.state = "waiting"
+        self.coup_game.next_turn()
+
         # Verificação do turno atual
         current_player = self.coup_game.get_current_player()
-        print(f"INFO: Próximo turno para: {current_player.name if current_player else 'Nenhum jogador'}")
+        await ctx.send(f"Agora é a vez de: {current_player.name if current_player else 'Nenhum jogador'}")
         
-        
+        self.target = ""
+
         for player in self.coup_game.players:
             member = await self.bot.fetch_user(player.id)
             print(member)

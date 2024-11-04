@@ -9,6 +9,7 @@ class Coup:
         self.state = "waiting" # waiting / doubt
         self.cpass = None
         self.action = ""
+        self.target = ""
     
     def start_game(self):
         print("INFO: Iniciando o jogo...")
@@ -99,10 +100,12 @@ class Coup:
     
     def action_choose_card(self, player, chosen_card):
         print(f"INFO: tentando eliminar a carta {chosen_card.name} do jogador {player.name}")
-        
-        # Tenta encontrar e remover a carta escolhida
-        if chosen_card in player.cards:
-            player.cards.remove(chosen_card)
+
+        for card in player.cards:
+            if card.name == chosen_card.name and not card.appear:
+                card.appear = True
+                    
+
             print(f"INFO: Carta {chosen_card.name} eliminada do jogador {player.name}.")
             return chosen_card
         else:
