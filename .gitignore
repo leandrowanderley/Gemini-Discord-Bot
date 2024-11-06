@@ -2,6 +2,7 @@
 config.json
 prompts.json
 mensagens.json
+src/build/
 
 # Ignorar arquivos de ambiente
 .env
