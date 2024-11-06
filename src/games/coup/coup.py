@@ -43,17 +43,17 @@ class Coup:
 
     # Actions
 
-    def action(self, player, target=None, card_name=None):
+    def action(self, player):
         if self.action == "basica":
             self.action_basica(player)
         elif self.action == "ajudaExterna":
             self.action_ajudaExterna(player)
         elif self.action == "coup":
-            self.action_coup(player, target)
+            self.action_coup(player)
         elif self.action == "duque":
             self.action_duque(player)
         elif self.action == "capitao":
-            self.action_capitao(player, target)
+            self.action_capitao(player)
         # elif self.action == "assassino":
         #     self.action_assassino(player, target, card_name)
         # elif self.action == "embaixador":
@@ -65,16 +65,20 @@ class Coup:
     def action_ajudaExterna(self, player):
         player.tokens += 2
     
-    def action_coup(self, player, target):
+    def action_coup(self, player):
         if player.tokens < 7:
             return False
         player.tokens -= 7
-        # target.lose_card()
 
     def action_duque(self, player):
         player.tokens += 3
     
-    def action_capitao(self, player, target):
+    def action_capitao(self, player):
+        for i in range(len(self.players)):
+            if self.players[i].name == self.target:
+                target = self.players[i]
+                break
+
         steal_amount = min(target.tokens, 2)
         if steal_amount > 0:
             target.tokens -= steal_amount

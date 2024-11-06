@@ -25,7 +25,7 @@ class CoupDiscord(commands.Cog):
                     "- `/coup_jogadores`  ➜ Mostra os jogadores que estão na partida.\n"
                     "- `/coup_pass`  ➜ Quando todos os jogadores digitarem este comando, significa que ninguém duvida, e a ação será realizada.\n"
                     "- `/coup_choose_card`  ➜ Escolher carta - Escolha uma carta papa perder.\n"
-                    "- `/coup_order`  ➜ Ordem de jogadores - Ver a ordem de jogadores da partida.\n"
+                    "- `/coup_ordem`  ➜ Ordem de jogadores - Ver a ordem de jogadores da partida.\n"
                     "- `/coup_duvidar`  ➜ Usado por um jogador para duvidar da ação de outro jogador.\n\n"
                     )
 
@@ -42,6 +42,8 @@ class CoupDiscord(commands.Cog):
                     "- `/coup_embaixador`  ➜ Embaixador - Pegue duas cartas do topo do baralho e escolha duas para devolver ao fundo do baralho.\n"
                     "- `/coup_condessa`  ➜ Condessa - Protege contra o Assassino.\n\n"
                     )
+
+
 
     # Comandos para iniciar o Jogo Coup
     @commands.command()
@@ -109,13 +111,14 @@ class CoupDiscord(commands.Cog):
             await ctx.send("Ocorreu um erro ao iniciar o jogo.")
 
     @commands.command()
-    async def coup_order(self, ctx):
+    async def coup_ordem(self, ctx):
         if self.coup_game is None:
             await ctx.send("Nenhuma partida aberta! Use `/coup_open_game` para iniciar uma.")
             return
 
         players = self.coup_game.get_players()
         await ctx.send("Ordem dos jogadores: " + ", ".join(players))
+
 
 
     # Comandos de ações do jogo Coup
@@ -126,14 +129,15 @@ class CoupDiscord(commands.Cog):
             return
         elif self.coup_game.state == "doubt":
             self.coup_game.cpass += 1
-            if self.coup_game.cpass == len(self.coup_game.players):
+            if self.coup_game.cpass == (len(self.coup_game.players) - 1):
+                current_player = self.coup_game.get_current_player()
                 self.coup_game.cpass = 0
                 self.coup_game.state = "waiting"
-                await ctx.send("Todos passaram! A ação será realizada.")
-                self.coup_game.action(self.coup_game.get_current_player())
+                await ctx.send(f"Todos passaram! {current_player} irá realizar a ação de {self.coup_game.action}.")
+                self.coup_game.action(current_player)
                 self.coup_game.next_turn()
             else:
-                await ctx.send("Votos para passar: " + str(self.coup_game.cpass) + "/" + str(len(self.coup_game.players)))
+                await ctx.send("Votos para passar: " + str(self.coup_game.cpass) + "/" + str(len(self.coup_game.players) - 1))
         else:
             await ctx.send("Nada para passar!")
 
@@ -161,7 +165,7 @@ class CoupDiscord(commands.Cog):
         if self.coup_game is None:
             await ctx.send("Nenhuma partida aberta! Use `/coup_open_game` para iniciar uma.")
             return
-        
+        self.coup_game.action = "coup"
         player = self.coup_game.get_current_player()
         target = self.coup_game.get_player(message)
         self.target = target
@@ -211,35 +215,49 @@ class CoupDiscord(commands.Cog):
         # Verificação do estado do jogo após a ação
         print(f"INFO: Estado atual do jogo após a eliminação da carta: {self.coup_game.state}")
         
-        self.coup_game.state = "waiting"
-        self.coup_game.next_turn()
 
-        # Verificação do turno atual
-        current_player = self.coup_game.get_current_player()
-        await ctx.send(f"Agora é a vez de: {current_player.name if current_player else 'Nenhum jogador'}")
-        
-        self.target = ""
+        if self.coup_game.action == "coup":
+            self.coup_game.state = "waiting"
+            self.coup_game.next_turn()
+
+            # Verificação do turno atual
+            current_player = self.coup_game.get_current_player()
+            await ctx.send(f"Agora é a vez de: {current_player.name if current_player else 'Nenhum jogador'}")
+            
+            self.target = ""
+            self.coup_game.action == ""
 
         for player in self.coup_game.players:
             member = await self.bot.fetch_user(player.id)
             print(member)
             await member.send("Seu status é: " + str(player))
 
-    
+    @commands.command()
+    async def coup_ajudaExterna(self, ctx):
+        player = self.coup_game.get_current_player()
+        if player.name != ctx.author.name:
+            await ctx.send(f"Agora é a vez de {player.name}.")
+            return
+        if self.coup_game is None:
+            await ctx.send("Nenhuma partida aberta! Use `/coup_open_game` para iniciar uma.")
+            return
+
+        player = self.coup_game.get_current_player()
+        await ctx.send(f"{player.name} está pedindo Ajuda Externa, ele irá ganhar 2 tokens.")
+        self.coup_game.action = "ajudaExterna"
+        self.coup_game.state = "doubt"
+
+
+
+
+
+
+
+
     @commands.command()
     async def coup_test(self, ctx):
         player = self.coup_game.get_current_player()
         player.tokens += 100
-
-
-
-
-
-
-
-
-
-
 
 async def setup(bot):
     print("Adicionando o cog CoupDiscord...")
