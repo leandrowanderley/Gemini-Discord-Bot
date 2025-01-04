@@ -9,9 +9,9 @@ from responses import configure_genai, generate_message
 from utils import split_message
 
 # Carregar configurações
-config = load_config("D:\\programacao\\Gemini-Discord-Bot\\src\\data\\config.json")
+config = load_config("/Users/leandrowanderley/Documents/programacao/own-projects/Gemini-Discord-Bot/src/data/config.json")
 discord_token = config["discord_token"]
-mensagens = load_messages("D:\\programacao\\Gemini-Discord-Bot\\src\\data\\mensagens.json")
+mensagens = load_messages("/Users/leandrowanderley/Documents/programacao/own-projects/Gemini-Discord-Bot/src/data/mensagens.json")
 historico = []
 
 # Configurar API do Gemini
@@ -28,7 +28,9 @@ async def load_cogs():
 
 @bot.command()
 async def chat(ctx, *, message: str):
-    gemini_answer = generate_message(message, historico, model, "D:\\programacao\\Gemini-Discord-Bot\\src\\data\\prompts.json")
+
+    print(f"INFO: Comando /chat acionado por {ctx.author.name}.")
+    gemini_answer = generate_message(message, historico, model, "/Users/leandrowanderley/Documents/programacao/own-projects/Gemini-Discord-Bot/src/data/prompts.json")
     historico.append((message, gemini_answer))
 
     if len(historico) > 10:
@@ -36,7 +38,8 @@ async def chat(ctx, *, message: str):
 
     for msg in split_message(gemini_answer):
         await ctx.send(msg)
-    print(f"INFO: Comando /chat acionado por {ctx.author.name}.")
+
+    print(f"INFO: Interação /chat acionado por {ctx.author.name} finalizada.")
 
 @bot.command()
 async def games(ctx):
@@ -76,9 +79,9 @@ async def on_guild_join(guild):
         embed.set_thumbnail(url="attachment://gojo.jpg")
         embed.set_image(url="attachment://gojo-morto.png")
 
-        with open("D:\\programacao\\Gemini-Discord-Bot\\icon.png", "rb") as icon_file, \
-             open("D:\\programacao\\Gemini-Discord-Bot\\imgs\\gojo.jpg", "rb") as gojo_file, \
-             open("D:\\programacao\\Gemini-Discord-Bot\\imgs\\gojo-morto.png", "rb") as gojo_morto_file:
+        with open("/Users/leandrowanderley/Documents/programacao/own-projects/Gemini-Discord-Bot/icon.png", "rb") as icon_file, \
+             open("/Users/leandrowanderley/Documents/programacao/own-projects/Gemini-Discord-Bot/imgs/gojo.jpg", "rb") as gojo_file, \
+             open("/Users/leandrowanderley/Documents/programacao/own-projects/Gemini-Discord-Bot/imgs/gojo-morto.png", "rb") as gojo_morto_file:
 
             await channel.send(embed=embed, files=[
                 discord.File(icon_file, filename="icon.png"),
