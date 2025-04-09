@@ -90,7 +90,7 @@ EXTRA. Fazer um executável para o bot:
 Caso queira, faça um executável com esse comando.
 
 ```bash
-python -m PyInstaller --onefile --icon=../icon.png bot.py --hidden-import google --hidden-import google.generativeai
+python -m PyInstaller --onefile --icon=../icon.png app.py --hidden-import google --hidden-import google.generativeai
 ```
 
 ## Licença

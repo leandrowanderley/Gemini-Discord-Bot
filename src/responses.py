@@ -23,7 +23,6 @@ def generate_message(message, historico, model, prompts_path):
 
     with open(prompts_path, "r") as file:
         prompts = json.load(file)
-        #print(f"Prompts carregados: {prompts}")
 
     # Format history for the model request
     formatted_history = []
@@ -32,15 +31,11 @@ def generate_message(message, historico, model, prompts_path):
         formatted_history.append({"role": "model", "parts": [answer]})
     
     formatted_history.append({"role": "user", "parts": [message]})
-    #print(f"Histórico formatado: {formatted_history}")  # Log do histórico formatado
     
-    # Add the current user message as the prompt
     prompt = prompts.get("prompt1", "Desculpe, não encontrei o prompt.")
     
     # Request the response from the model
     response = model.start_chat(history=formatted_history).send_message(prompt + message)
-
-    #print(f"Resposta da API: {response}")  # Log da resposta completa da API
 
     if not response.candidates:
         print("WARNING: Nenhuma resposta recebida da API.")
