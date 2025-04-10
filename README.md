@@ -19,6 +19,46 @@
 
 <div align="center">
 
+<table>
+  <tr>
+    <th>Tecnologia</th>
+    <th>Descrição</th>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="imgs/icon-python.svg" width="40"><br>
+      <strong>Python</strong>
+    </td>
+    <td align="center">Linguagem base do projeto</td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="imgs/icon-gemini.png" width="40"><br>
+      <strong>Google Gemini API</strong>
+    </td>
+    <td align="center">Geração de respostas inteligentes</td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="imgs/icon-discord.jpg" width="40"><br>
+      <strong>Discord.py</strong>
+    </td>
+    <td align="center">Integração com Discord</td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="imgs/icon-json.svg" width="40"><br>
+      <strong>JSON</strong>
+    </td>
+    <td align="center">Configurações e armazenamento</td>
+  </tr>
+</table>
+
+</div>
+
+
+<!-- <div align="center">
+
 | Tecnologia          | Descrição                                  |
 |---------------------|-------------------------------------------|
 | <img src="imgs/icon-python.svg" width="40"> Python | Linguagem base do projeto |
@@ -26,7 +66,7 @@
 | <img src="imgs/icon-discord.jpg" width="40"> Discord.py | Integração com Discord |
 | <img src="imgs/icon-json.svg" width="40"> JSON | Configurações e armazenamento |
 
-</div>
+</div> -->
 
 ## ⚡ Configuração Rápida
 
