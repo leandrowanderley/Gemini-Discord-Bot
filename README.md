@@ -6,6 +6,7 @@
   *Conectando comunidades através de conversas inteligentes*
   
   <img src="imgs/logo-lw.png" alt="Logo LW (Leandro Wanderley)" width="200">
+  
   *Made by: LW (Leandro Wanderley)*
 </div>
 
