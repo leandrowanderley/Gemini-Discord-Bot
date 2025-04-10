@@ -5,10 +5,12 @@
   
   *Conectando comunidades através de conversas inteligentes*
   
-  <img src="imgs/logo-lw.png" alt="Logo LW (Leandro Wanderley)" width="200">
-  
+  <img src="imgs/logo-lw.png" alt="Logo LW (Leandro Wanderley)" width="100">
+
   *Made by: LW (Leandro Wanderley)*
 </div>
+
+
 
 ## 🚀 Funcionalidades Principais
 
