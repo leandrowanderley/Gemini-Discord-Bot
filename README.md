@@ -1,11 +1,11 @@
 # FalAI - Assistente Inteligente para Discord com Gemini
 
 <div align="center">
-  <img src="banner.png" alt="Banner do FalAI" width="680">
+  <img src="imgs/banner.png" alt="Banner do FalAI" width="680">
   
   *Conectando comunidades através de conversas inteligentes*
   
-  <img src="icon.png" alt="Ícone do FalAI" width="200">
+  <img src="imgs/icon.png" alt="Ícone do FalAI" width="200">
 </div>
 
 ## 🚀 Funcionalidades Principais
@@ -21,10 +21,10 @@
 
 | Tecnologia          | Descrição                                  |
 |---------------------|-------------------------------------------|
-| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" width="40"> Python | Linguagem base do projeto |
-| <img src="https://gemini.google.com/static/images/gemini-favicon.png" width="40"> Google Gemini API | Geração de respostas inteligentes |
-| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/discord/discord-original.svg" width="40"> Discord.py | Integração com Discord |
-| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/json/json-original.svg" width="40"> JSON | Configurações e armazenamento |
+| <img src="imgs/icon-python.svg" width="40"> Python | Linguagem base do projeto |
+| <img src="imgs/icon-gemini.png" width="40"> Google Gemini API | Geração de respostas inteligentes |
+| <img src="imgs/icon-discord.jpg" width="40"> Discord.py | Integração com Discord |
+| <img src="imgs/icon-json.svg" width="40"> JSON | Configurações e armazenamento |
 
 </div>
 
@@ -101,5 +101,5 @@ Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](L
 This project is licensed under the **MIT License** - see the [LICENSE](LICENSE.txt) file for details.
 
 <div align="center">
-  <img src="icon.png" alt="FalAI Icon" width="100">
+  <img src="imgs/icon.png" alt="FalAI Icon" width="100">
 </div>
