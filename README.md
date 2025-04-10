@@ -33,7 +33,7 @@
   </tr>
   <tr>
     <td align="center">
-      <img src="imgs/icon-gemini.png" width="40"><br>
+      <img src="imgs/icon-gemini.png" hight="40"><br>
       <strong>Google Gemini API</strong>
     </td>
     <td align="center">Geração de respostas inteligentes</td>
