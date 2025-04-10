@@ -1,11 +1,12 @@
 # FalAI - Assistente Inteligente para Discord com Gemini
 
 <div align="center">
-  <img src="imgs/banner.png" alt="Banner do FalAI" width="680">
+  <img src="imgs/banner.png" alt="Banner do FalAI" width="340">
   
   *Conectando comunidades através de conversas inteligentes*
   
-  <img src="imgs/icon.png" alt="Ícone do FalAI" width="200">
+  <img src="imgs/logo-lw.png" alt="Logo LW (Leandro Wanderley)" width="200">
+  *Made by: LW (Leandro Wanderley)*
 </div>
 
 ## 🚀 Funcionalidades Principais
