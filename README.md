@@ -26,7 +26,7 @@
   </tr>
   <tr>
     <td align="center">
-      <img src="imgs/icon-python.svg" width="40"><br>
+      <img src="imgs/icon-python.svg" height="40"><br>
       <strong>Python</strong>
     </td>
     <td align="center">Linguagem base do projeto</td>
@@ -40,14 +40,14 @@
   </tr>
   <tr>
     <td align="center">
-      <img src="imgs/icon-discord.jpg" width="40"><br>
+      <img src="imgs/icon-discord.jpg" height="40"><br>
       <strong>Discord.py</strong>
     </td>
     <td align="center">Integração com Discord</td>
   </tr>
   <tr>
     <td align="center">
-      <img src="imgs/icon-json.svg" width="40"><br>
+      <img src="imgs/icon-json.svg" height="40"><br>
       <strong>JSON</strong>
     </td>
     <td align="center">Configurações e armazenamento</td>
