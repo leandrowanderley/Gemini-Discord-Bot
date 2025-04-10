@@ -1,43 +1,53 @@
-# Discord Bot com Gemini
+# FalAI - Assistente Inteligente para Discord com Gemini
 
-Este repositório contém um bot do Discord desenvolvido em Python que utiliza a API Gemini para interações conversacionais. O bot é projetado para responder a mensagens dos usuários com base em um histórico de conversas, permitindo diálogos mais naturais e contextuais.
+<div align="center">
+  <img src="banner.png" alt="Banner do FalAI" width="680">
+  
+  *Conectando comunidades através de conversas inteligentes*
+  
+  <img src="icon.png" alt="Ícone do FalAI" width="200">
+</div>
 
-## Funcionalidades
+## 🚀 Funcionalidades Principais
 
-- **Interação Conversacional**: O bot utiliza a API Gemini para gerar respostas baseadas nas mensagens anteriores.
-- **Histórico de Mensagens**: O bot mantém um histórico das últimas 10 mensagens e respostas para proporcionar continuidade nas conversas.
-- **Fácil Configuração**: Configurações personalizáveis através de um arquivo `config.json`, incluindo tokens de acesso e parâmetros de geração de mensagens.
+- **🤖 Interação Conversacional**: Utiliza a API Gemini para gerar respostas contextualizadas baseadas no histórico de mensagens
+- **📚 Histórico de Mensagens**: Mantém registro das últimas 10 interações para conversas mais naturais
+- **⚙️ Fácil Configuração**: Personalização completa via arquivos `config.json`, `prompts.json` e `mensagens.json`
+- **🌐 Multiplataforma**: Compatível com Windows, macOS e Linux
 
-## Tecnologias Utilizadas
+## 💻 Technology Stack
 
-- Google Gemini API
-- Python
-- Discord.py
-- Json
+<div align="center">
 
-## Como Começar
+| Tecnologia          | Descrição                                  |
+|---------------------|-------------------------------------------|
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" width="40"> Python | Linguagem base do projeto |
+| <img src="https://gemini.google.com/static/images/gemini-favicon.png" width="40"> Google Gemini API | Geração de respostas inteligentes |
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/discord/discord-original.svg" width="40"> Discord.py | Integração com Discord |
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/json/json-original.svg" width="40"> JSON | Configurações e armazenamento |
 
-### Pré-requisitos
+</div>
 
-- Python 3.7 ou superior
-- Conta no Discord para criar um bot
-- Token do Bot do Discord
-- Key de API da Gemini
+## ⚡ Configuração Rápida
 
-### Passos
+### 📋 Pré-requisitos
+
+- Python 3.7+
+- Conta de desenvolvedor no Discord
+- Chave de API da Gemini
+
+### 🛠️ Passos de Instalação
 
 1. Clone o repositório:
-
-   ```bash
-   git clone https://github.com/leandro-odev/BotDiscord
-   cd BotDiscord
+    ```bash
+    git clone https://github.com/leandrowanderley/Gemini-Discord-Bot
+    cd Gemini-Discord-Bot
     ```
 
 2. Crie e ative um ambiente virtual (opcional, mas recomendado):
 
     ```bash
     python -m venv .venv
-    # Ative o ambiente virtual
     # Windows
     .venv\Scripts\activate
     # macOS/Linux
@@ -54,7 +64,7 @@ Este repositório contém um bot do Discord desenvolvido em Python que utiliza a
 
     ```bash
     {
-        "discord_token": "SEU_TOKEN_DO_DISCORD",
+        "discord_token": "SEU_TOKEN_DO_BOT_DO_DISCORD",
         "gemini_api_key": "SUA_CHAVE_DE_API_GEMINI"
     }
     ```
@@ -65,17 +75,15 @@ Você deve criar esses arquivos `.json`, pois eles possuem uma função específ
     ```bash
     # prompts.json
     {
-        "prompt1": "Prompt 1",
-        "prompt2": "Prompt 2"
+        "prompt1": "Você é o FalAI, um assistente...",
+        "prompt2": "Responda de forma amigável..."
     }
     
     # mensagens.json
     {
-    "mensagens": [
-            "Mensagem 1",
-            "Mensagem 2",
-            "Mensagem 3",
-            "..."
+        "mensagens": [
+            "Bem-vindo ao servidor!",
+            "Como posso te ajudar hoje?"
         ]
     }
     ```
@@ -83,16 +91,15 @@ Você deve criar esses arquivos `.json`, pois eles possuem uma função específ
 6. Execute o bot:
 
     ```bash
-    python main.py
+    python run.py
     ```
 
-EXTRA. Fazer um executável para o bot:
-Caso queira, faça um executável com esse comando.
+## 📜 Licença
 
-```bash
-python -m PyInstaller --onefile --icon=../icon.png app.py --hidden-import google --hidden-import google.generativeai
-```
+Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](LICENSE.txt) para detalhes.
 
-## Licença
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE.txt) file for details.
 
-Este projeto está licenciado sob a MIT License - veja o arquivo [LICENSE](LICENSE.txt) para detalhes.
+<div align="center">
+  <img src="icon.png" alt="FalAI Icon" width="100">
+</div>
