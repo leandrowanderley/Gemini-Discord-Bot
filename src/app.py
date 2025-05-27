@@ -1,14 +1,3 @@
-# Código Atual (Problemático)	                Lógica a ser implementada (Correta)
-# historico = [] (global)	                    historicos_por_servidor = {} (global)
-# Usa a mesma historico sempre.	                1. Pega o ID do servidor: guild_id = interaction.guild.id
-#                                               2. Pega o histórico certo: historico_especifico = historicos_por_servidor.get(guild_id, [])
-# generate_message(..., historico, ...)	        generate_message(..., historico_especifico, ...)
-# historico.append(...)	                        historico_especifico.append(...)
-# Nada mais a fazer.	                        3. Salva a lista atualizada:
-#                                               historicos_por_servidor[guild_id] = historico_especifico
-
-
-
 
 # === Imports Padrão ===
 import os
