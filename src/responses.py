@@ -1,4 +1,3 @@
-
 import json
 import os
 import google.generativeai as genai
@@ -41,6 +40,5 @@ def generate_message(message, historico, model, prompts_path):
         print("WARNING: Nenhuma resposta recebida da API.")
         return "Desculpe, não recebi uma resposta válida da API."
     
-    gemini_answer = response.candidates[0].content.parts[0].text
-    historico.append((message, gemini_answer))
+    # The appending to history is now handled in app.py
     return response.candidates[0].content.parts[0].text

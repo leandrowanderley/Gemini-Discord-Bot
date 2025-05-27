@@ -1,3 +1,15 @@
+# Código Atual (Problemático)	                Lógica a ser implementada (Correta)
+# historico = [] (global)	                    historicos_por_servidor = {} (global)
+# Usa a mesma historico sempre.	                1. Pega o ID do servidor: guild_id = interaction.guild.id
+#                                               2. Pega o histórico certo: historico_especifico = historicos_por_servidor.get(guild_id, [])
+# generate_message(..., historico, ...)	        generate_message(..., historico_especifico, ...)
+# historico.append(...)	                        historico_especifico.append(...)
+# Nada mais a fazer.	                        3. Salva a lista atualizada:
+#                                               historicos_por_servidor[guild_id] = historico_especifico
+
+
+
+
 # === Imports Padrão ===
 import os
 import random
@@ -47,7 +59,7 @@ log("Bot inicializado com intents configuradas 🚀", "sucesso")
 bot = commands.Bot(command_prefix='/', intents=intents)
 
 # Histórico de mensagens do chat
-historico = []
+historico = {}
 
 
 # === Comandos ===
@@ -62,17 +74,23 @@ async def games(interaction: discord.Interaction):
 async def chat(interaction: discord.Interaction, message: str):
     log(f"Comando '/chat' chamado por {interaction.user}: '{message}'", "info")
     await interaction.response.defer()
+    
+    guild_id = interaction.guild.id
+    
+    historico_especifico = historico.get(guild_id, [])
 
     resposta = await asyncio.to_thread(
-        generate_message, message, historico, model, os.path.join(DATA_DIR, "prompts.json")
+        generate_message, message, historico_especifico, model, os.path.join(DATA_DIR, "prompts.json")
     )
 
     log("Resposta gerada pelo modelo, enviando para o usuário...", "info")
 
-    historico.append((message, resposta))
-    if len(historico) > 10:
+    historico_especifico.append((message, resposta))
+    if len(historico_especifico) > 10:
         log("Histórico ultrapassou 10 entradas, removendo a mais antiga", "aviso")
-        historico.pop(0)
+        historico_especifico.pop(0)
+    
+    historico[guild_id] = historico_especifico
 
     for parte in split_message(resposta):
         await interaction.followup.send(parte)
@@ -101,6 +119,7 @@ async def on_ready():
 @bot.event
 async def on_guild_join(guild):
     log(f"Entrou em um novo servidor: {guild.name} ({guild.id})", "info")
+    historico[guild.id] = []
     channel = discord.utils.find(lambda x: x.permissions_for(guild.me).send_messages, guild.text_channels)
     if not channel:
         log("Nenhum canal disponível para enviar a mensagem de boas-vindas.", "aviso")
@@ -120,6 +139,7 @@ async def load_cogs():
 # === Main ===
 async def main():
     log("Iniciando o bot com token do Discord...", "info")
+    # await load_cogs()
     await bot.start(discord_token)
 
 if __name__ == "__main__":
